@@ -25,4 +25,20 @@ router.post("/register", async (req, res) => {
 	}
 });
 
+// POST /api/users/login: check email and password and send back a JWT
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email: email?.toLowerCase() });
+        const correctPW = user && await user.isCorrectPassword(password);
+        if (!correctPW) {
+            return res.status(400).json({ message: 'Incorrect email or password.' });
+        }
+        const token = signToken(user);
+        res.json({ token, user });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
 export default router;
