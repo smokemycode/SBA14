@@ -2,6 +2,7 @@
 import 'dotenv/config';
 import express from 'express';
 import db from './config/connection.js';
+import userRoutes from './routes/userRoutes.js';
 
 // create the app and set the port
 const app = express();
@@ -9,6 +10,9 @@ const PORT = process.env.PORT || 3000;
 
 // middleware to parse JSON bodies
 app.use(express.json());
+
+// routes for user registration and login
+app.use('/api/users', userRoutes);
 
 // test route
 app.get('/', (req, res) => res.json({ message: '🌍 Innovate Inc. Secure Web Portal API is running!'}));
